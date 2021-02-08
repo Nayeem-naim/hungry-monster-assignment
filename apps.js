@@ -1,27 +1,27 @@
 
-const getFoodData = food => {
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata')
-    .then(res => res.json())
-    .then(data => foodName(data.meals));
+
+const searchFood = () => {
+    const searchInput = document.getElementById('food').value;
+    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayFood(data.meals))
 }
 
-    const foodName = foods => {
-        for (let i = 0; i < foods; i++) {
-            const element = food[i];
-            // console.log(element.meals);
-            document.getElementById('food-name').innerText = element.meals;
-        }
-    }
 
-    const searchBtn = document.getElementById('search-button');
-searchBtn.addEventListener('click', () => {
-    const inputFood = document.getElementById('food').value;
-    getFoodData(inputFood)
-})
+const displayFood = foods => {
+    const foodNames = document.getElementById('food-body');
 
-const updateData = dataItem => {
-    document.getElementById('icon').innerText = dataItem.strMealThumb
-    document.getElementById('food-name').innerText = dataItem.meals || "Unknown  Food Name"; 
-    document.getElementById('foods-info').innerText = dataItem.strCategory;
+    foods.forEach(food => {
+        const foodDiv = document.createElement('div');
+        foodDiv.className = 'container food-status'
+        foodDiv.innerHTML = `
+        <img onclick="moreInfo()" id="icon" src="${food.strMealThumb}" alt="">
+        <h1 id="food-name">${food.strMeal}</h1>
+        
+        `
+            ;
+        foodNames.appendChild(foodDiv);
+    })
+}
 
-};
